@@ -23,9 +23,19 @@
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        },
+        "types": [
+            "vitest/globals"
+        ]
     },
     "include": [
-        "src"
+        "src",
+        "setupTests.ts"
     ]
 }
