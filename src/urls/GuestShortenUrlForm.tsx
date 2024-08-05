@@ -13,6 +13,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useShortenUrl} from "@/urls/useShortenUrl.ts";
+import {useState} from "react";
 
 const shortenUrlSchema = z.object({
     url: z.string().url({
@@ -21,6 +22,7 @@ const shortenUrlSchema = z.object({
 });
 
 export const GuestShortenUrlForm = () => {
+    const [shortUrl, setShortUrl] = useState("")
     const form = useForm<z.infer<typeof shortenUrlSchema>>({
         resolver: zodResolver(shortenUrlSchema),
         defaultValues: {
@@ -29,8 +31,10 @@ export const GuestShortenUrlForm = () => {
     })
     const {shortenUrl} = useShortenUrl();
 
-    const onSubmit = (data: z.infer<typeof shortenUrlSchema>) => {
-        shortenUrl(data.url);
+    const onSubmit = async (data: z.infer<typeof shortenUrlSchema>) => {
+        const shortenedUrl = await shortenUrl(data.url);
+
+        setShortUrl(shortenedUrl.shortUrl);
     }
 
     return (
@@ -52,6 +56,11 @@ export const GuestShortenUrlForm = () => {
                         </FormItem>
                     )}
                 />
+                {shortUrl && (
+                    <div>
+                        <FormMessage>{shortUrl}</FormMessage>
+                    </div>
+                )}
                 <Button type="submit">Shorten URL</Button>
             </form>
         </Form>

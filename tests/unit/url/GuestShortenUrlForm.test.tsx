@@ -4,6 +4,7 @@ import {userEvent} from "@testing-library/user-event";
 import {vi} from "vitest";
 import * as useShortenUrlHook from "@/urls/useShortenUrl.ts";
 import {afterEach} from "node:test";
+import {ShortenedUrl} from "@/urls/ShortenedUrl.ts";
 
 async function insertUrl(url: string) {
     const urlToShortenInput = screen.getByLabelText(/URL to shorten/i);
@@ -16,7 +17,13 @@ async function submitUrl() {
 }
 
 describe("GuestShortenUrlForm", () => {
-    const shortenUrl: (url: string) => void = vi.fn();
+    const url = "https://www.example.com";
+    const shortenedUrl: ShortenedUrl = {
+        key: "abc123",
+        originalUrl: url,
+        shortUrl: "http://localhost:3000/abc123"
+    };
+    const shortenUrl: (url: string) => Promise<ShortenedUrl> = vi.fn().mockResolvedValue(shortenedUrl);
     const useShortenUrlSpy = vi.spyOn(useShortenUrlHook, "useShortenUrl");
     useShortenUrlSpy.mockReturnValue({
         shortenUrl,
@@ -29,7 +36,6 @@ describe("GuestShortenUrlForm", () => {
     it("should submit the form with the given URL", async () => {
         render(<GuestShortenUrlForm/>);
 
-        const url = "https://www.example.com";
         await insertUrl(url);
 
         await submitUrl();
@@ -37,10 +43,21 @@ describe("GuestShortenUrlForm", () => {
         expect(shortenUrl).toHaveBeenCalledWith(url)
     })
 
-    it("should show message 'Please submit a valid URL' when given URL is invalid", async () => {
+    it("should display the result of the shortened URL", async () => {
         render(<GuestShortenUrlForm/>);
 
+        await insertUrl(url);
+
+        await submitUrl();
+
+        expect(screen.getByText(shortenedUrl.shortUrl)).toBeVisible();
+    })
+
+    it("should show message 'Please submit a valid URL' when given URL is invalid", async () => {
         const url = "bad-example";
+
+        render(<GuestShortenUrlForm/>);
+
         await insertUrl(url)
 
         await submitUrl();
