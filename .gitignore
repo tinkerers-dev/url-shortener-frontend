@@ -26,3 +26,15 @@ dist-ssr
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# stryker temp files
+.stryker-tmp
+
+# styker reports
+reports/**/*
+
+# environment files
+.env
+.env.development
+.env.production
+.env.test
