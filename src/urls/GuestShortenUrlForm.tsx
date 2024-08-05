@@ -12,7 +12,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {useShortenUrl} from "@/urls/useShortenUrl.tsx";
+import {useShortenUrl} from "@/urls/useShortenUrl.ts";
 
 const shortenUrlSchema = z.object({
     url: z.string().url({

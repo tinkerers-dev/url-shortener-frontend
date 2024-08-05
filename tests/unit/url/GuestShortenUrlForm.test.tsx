@@ -2,7 +2,7 @@ import {render, screen} from "@testing-library/react";
 import {GuestShortenUrlForm} from "../../../src/urls/GuestShortenUrlForm.tsx";
 import {userEvent} from "@testing-library/user-event";
 import {vi} from "vitest";
-import * as useShortenUrlHook from "../../../src/urls/useShortenUrl.tsx";
+import * as useShortenUrlHook from "@/urls/useShortenUrl.ts";
 import {afterEach} from "node:test";
 
 async function insertUrl(url: string) {
