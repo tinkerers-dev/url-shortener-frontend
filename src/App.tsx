@@ -1,5 +1,5 @@
 import './App.css'
-import {GuestShortenUrlForm} from "@/components/GuestShortenUrlForm.tsx";
+import {GuestShortenUrlForm} from "@/urls/GuestShortenUrlForm.tsx";
 
 const App = () => (
     <>

@@ -1,14 +1,12 @@
 import {render, screen} from "@testing-library/react";
-import {GuestShortenUrlForm} from "@/components/GuestShortenUrlForm.tsx";
+import {GuestShortenUrlForm} from "../../../src/urls/GuestShortenUrlForm.tsx";
 import {userEvent} from "@testing-library/user-event";
 import {vi} from "vitest";
-import * as useShortenUrlHook from "@/hooks/useShortenUrl.tsx";
-import {z} from "zod";
-import {shortenUrlSchema} from "@/domain/url/shortenUrlSchema";
+import * as useShortenUrlHook from "../../../src/urls/useShortenUrl.tsx";
 
 describe("GuestShortenUrlForm", () => {
     it("should submit the form with the given URL", async () => {
-        const shortenUrl: (data: z.infer<typeof shortenUrlSchema>) => void = vi.fn();
+        const shortenUrl: (url: string) => void = vi.fn();
         const useShortenUrlSpy = vi.spyOn(useShortenUrlHook, "useShortenUrl");
         useShortenUrlSpy.mockReturnValue({
             shortenUrl,
@@ -25,8 +23,6 @@ describe("GuestShortenUrlForm", () => {
         const shortenUrlButton = screen.getByRole("button", {name: /shorten URL/i});
         await userEvent.click(shortenUrlButton);
 
-        expect(shortenUrl).toHaveBeenCalledWith({
-            url,
-        })
+        expect(shortenUrl).toHaveBeenCalledWith(url)
     })
 })

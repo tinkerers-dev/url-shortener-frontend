@@ -25,8 +25,6 @@ test.describe("Given a guest user visits the URL shortener", () => {
             await guestUrlShortener.shortenUrl();
 
             await guestUrlShortener.shouldHaveShortenedUrl(shortUrl);
-
-
         })
     })
 });

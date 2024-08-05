@@ -12,8 +12,13 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {useShortenUrl} from "@/hooks/useShortenUrl.tsx";
-import {shortenUrlSchema} from "@/domain/url/shortenUrlSchema.ts";
+import {useShortenUrl} from "@/urls/useShortenUrl.tsx";
+
+const shortenUrlSchema = z.object({
+    url: z.string().url({
+        message: "Please enter a valid URL",
+    }),
+});
 
 export const GuestShortenUrlForm = () => {
     const form = useForm<z.infer<typeof shortenUrlSchema>>({
@@ -25,7 +30,7 @@ export const GuestShortenUrlForm = () => {
     const {shortenUrl} = useShortenUrl();
 
     const onSubmit = (data: z.infer<typeof shortenUrlSchema>) => {
-        shortenUrl(data);
+        shortenUrl(data.url);
     }
 
     return (
