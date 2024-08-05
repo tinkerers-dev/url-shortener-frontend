@@ -1,0 +1,30 @@
+name: Test
+
+on:
+    pull_request:
+        branches:
+            - main
+jobs:
+    test:
+        timeout-minutes: 60
+        runs-on: ubuntu-latest
+        env:
+            VITE_NODE_ENV: test
+            VITE_URL_SHORTENER_API: ${{ secrets.VITE_URL_SHORTENER_API }}
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: actions/setup-node@v4
+                with:
+                    node-version: lts/*
+            -   name: Install dependencies
+                run: npm ci
+            -   name: Run tests
+                run: npm run test
+            -   name: Run mutation tests
+                run: npm run test:mutation
+            -   uses: actions/upload-artifact@v4
+                if: always()
+                with:
+                    name: mutation-report
+                    path: reports/mutation/
+                    retention-days: 30
