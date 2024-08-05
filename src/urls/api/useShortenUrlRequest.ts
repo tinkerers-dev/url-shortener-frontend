@@ -1,5 +1,6 @@
 import {useMutation} from "react-query";
+import {shortenUrlRequest} from "@/urls/api/api.ts";
 
 export const useShortenUrlRequest = () => {
-    return useMutation((url: string) => Promise.resolve(url));
+    return useMutation(shortenUrlRequest);
 }
